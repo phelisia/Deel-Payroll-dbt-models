@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: deel_data
+    database: deel_data
+    schema: raw
+    tables:
+      - name: raw_payroll_transactions
+        description: Raw payroll transaction data including payment dates and compliance status.
+      - name: raw_workers
+        description: Worker details including type and country.
+      - name: raw_compliance_rules
+        description: Compliance rules with minimum wage by country.

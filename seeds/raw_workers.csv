@@ -1,0 +1,5 @@
+worker_id,worker_type,country_code
+W001,EMPLOYEE,US
+W002,CONTRACTOR,KE
+W003,EMPLOYEE,UK
+W004,CONTRACTOR,IN
