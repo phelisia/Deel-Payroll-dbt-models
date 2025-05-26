@@ -19,12 +19,12 @@ clean-targets:
 models:
   deel_payroll_analytics:
     staging:
-      +schema: staging
+      +schema: raw_staging
     intermediate:
-      +schema: intermediate
+      +schema: raw_intermediate
     core:
       mart:
-        +schema: analytics
+        +schema: raw_analytics
       exposure:
-        +schema: analytics
+        +schema: raw_analytics
         +materialized: view
