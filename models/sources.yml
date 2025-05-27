@@ -11,3 +11,8 @@ sources:
         description: Worker details including type and country.
       - name: raw_compliance_rules
         description: Compliance rules with minimum wage by country.
+      - name: employees
+      - name: companies
+      - name: compliance_events
+      - name: payroll
+      - name: regulations
