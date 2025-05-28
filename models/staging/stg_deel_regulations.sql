@@ -1,42 +1,38 @@
 {{ config(
-    materialized='view'
+    materialized='view',
+    schema='staging'
 ) }}
 
-with
-
-source as (
-    select * from {{ source('deel_data', 'regulations') }}
+WITH source AS (
+    SELECT * FROM {{ source('raw', 'regulations') }}
 ),
+renamed AS (
+    SELECT
+        -- IDs
+        REGEXP_REPLACE(REGEXP_REPLACE(COALESCE(regulation_id, ''), '^TAX|^REG', ''), '^0*', '')::VARCHAR AS regulation_id,
 
-renamed as (
-    select
-        -- ids
-        REGEXP_REPLACE(REGEXP_REPLACE(regulation_id, '^TAX|^REG', ''), '^0*', '')::VARCHAR as regulation_id,
-
-        -- strings
-        country_id::VARCHAR as country_id,
-        description::VARCHAR as description,
-        rule_type::VARCHAR as rule_type,
-        tax_rate ,
+        -- Strings
+        country_id::VARCHAR AS country_id,
+        description::VARCHAR AS description,
+        rule_type::VARCHAR AS rule_type,
+        tax_rate,
         compliance_category,
 
-        -- dates
-        effective_date::DATE as effective_date,
-        coalesce(end_date, '9999-12-31')::DATE as end_date,
+        -- Dates
+        COALESCE(effective_date, '1900-01-01')::DATE AS effective_date,
+        COALESCE(end_date, '9999-12-31')::DATE AS end_date,
 
-        -- booleans
-        case
-            when end_date is null or end_date > current_date then true
-            else false
-        end as is_active,
+        -- Booleans
+        CASE
+            WHEN end_date IS NULL OR end_date > CURRENT_DATE THEN TRUE
+            ELSE FALSE
+        END AS is_active,
 
-        -- data quality
-        case
-            when regulation_id is null or regulation_id = '' then true
-            else false
-        end as is_filtered
-
-    from source
+        -- Data quality
+        CASE
+            WHEN regulation_id IS NULL OR regulation_id = '' THEN TRUE
+            ELSE FALSE
+        END AS is_filtered
+    FROM source
 )
-
-select * from renamed where not is_filtered
+SELECT * FROM renamed WHERE NOT is_filtered

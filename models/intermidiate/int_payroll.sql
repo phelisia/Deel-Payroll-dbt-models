@@ -1,5 +1,6 @@
 {{ config(
-    materialized='table'
+    materialized='table',
+    schema = 'intermediate'
 ) }}
 
 with
@@ -49,4 +50,5 @@ calculated as (
     where payment_id is not null
 )
 
-select * from calculated
+select *
+from calculated

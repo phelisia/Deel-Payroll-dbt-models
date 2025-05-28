@@ -2,7 +2,7 @@ name: 'deel_payroll_analytics'
 version: '1.0.0'
 config-version: 2
 
-profile: 'deel_payroll_analytics'
+profile: 'deel_analytics'  # Changed from deel_payroll_analytics
 
 model-paths: ["models"]
 analysis-paths: ["analyses"]
@@ -19,12 +19,12 @@ clean-targets:
 models:
   deel_payroll_analytics:
     staging:
-      +schema: raw_staging
+      +schema: staging
     intermediate:
-      +schema: raw_intermediate
+      +schema: intermediate
     core:
       mart:
-        +schema: raw_analytics
+        +schema: analytics
       exposure:
-        +schema: raw_analytics
+        +schema: analytics
         +materialized: view

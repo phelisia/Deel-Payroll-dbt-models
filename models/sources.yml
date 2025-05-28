@@ -1,8 +1,7 @@
 version: 2
 
 sources:
-  - name: deel_data
-    database: deel_data
+  - name: raw
     schema: raw
     tables:
       - name: raw_payroll_transactions
@@ -11,7 +10,7 @@ sources:
         description: Worker details including type and country.
       - name: raw_compliance_rules
         description: Compliance rules with minimum wage by country.
-      - name: employees
+      - name: final_employees
       - name: companies
       - name: compliance_events
       - name: payroll

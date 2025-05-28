@@ -1,11 +1,12 @@
 {{ config(
-    materialized='view'
+    materialized='view',
+    schema = 'staging'
 ) }}
 
 with
 
 source as (
-    select * from {{ source('deel_data', 'compliance_events') }}
+    select * from {{ source('raw', 'compliance_events') }}
 ),
 
 renamed as (

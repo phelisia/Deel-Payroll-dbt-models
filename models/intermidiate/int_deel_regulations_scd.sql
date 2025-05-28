@@ -1,39 +1,37 @@
 {{ config(
-    materialized='table'
+    materialized='table',
+    schema='intermediate'
 ) }}
 
-with
-
-staged as (
-    select
+WITH staged AS (
+    SELECT
         regulation_id,
         country_id,
         rule_type,
         description,
-        effective_date,
+        COALESCE(effective_date, '1900-01-01')::DATE AS effective_date,
         end_date,
         is_active,
         tax_rate,
         compliance_category
-    from {{ ref('stg_deel_regulations') }}
+    FROM {{ ref('stg_deel_regulations') }}
 ),
-
-scd_logic as (
-    select
+scd_logic AS (
+    SELECT
         regulation_id,
         country_id,
         rule_type,
         description,
         effective_date,
-        coalesce(
-            lead(effective_date) over (partition by regulation_id order by effective_date),
+        COALESCE(
+            LEAD(effective_date) OVER (PARTITION BY regulation_id ORDER BY effective_date),
             '9999-12-31'
-        )::DATE as end_date,
+        )::DATE AS end_date,
         is_active,
         tax_rate,
         compliance_category,
-        {{ dbt_utils.generate_surrogate_key(['regulation_id', 'effective_date']) }} as regulation_surrogate_key
-    from staged
+        {{ dbt_utils.generate_surrogate_key(['regulation_id', 'effective_date']) }} AS regulation_surrogate_key
+    FROM staged
+    WHERE effective_date IS NOT NULL
 )
-
-select * from scd_logic
+SELECT * FROM scd_logic

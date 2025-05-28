@@ -1,17 +1,16 @@
 {{ config(
     materialized='table',
-    unique_key='payment_id'
+    unique_key='payment_id',
+    schema='analytics'
 ) }}
 
-with
-
-payroll as (
-    select
+WITH payroll AS (
+    SELECT
         payment_id,
-        employee_id,
-        client_id,
-        country_id,
-        tax_rule_id,
+         CAST(employee_id AS VARCHAR) AS employee_id,
+        CAST(client_id AS VARCHAR) AS client_id,
+        CAST(country_id AS VARCHAR) AS country_id,
+        CAST(tax_rule_id AS VARCHAR) AS tax_rule_id,
         gross_pay,
         tax_amount,
         net_pay,
@@ -20,19 +19,19 @@ payroll as (
         status,
         compliance_status,
         processing_time_seconds
-    from {{ ref('int_payroll') }}
+    FROM {{ ref('int_payroll') }}
 ),
-
-joined as (
-    select
+joined AS (
+    SELECT
         p.payment_id,
-        e.employee_id,
-        e.contract_type,
+        p.employee_id,
         de.employee_surrogate_key,
+        COALESCE(de.employee_name, 'Unknown Employee') AS employee_name,
+        de.contract_type,
         p.client_id,
-        dc.client_id as dim_client_id,
+        dc.client_id AS dim_client_id,
         p.country_id,
-        tr.regulation_surrogate_key as tax_rule_surrogate_key,
+        COALESCE(tr.regulation_surrogate_key, 'Unknown') AS tax_rule_surrogate_key,
         p.gross_pay,
         p.tax_amount,
         p.net_pay,
@@ -40,20 +39,16 @@ joined as (
         p.payment_date,
         p.status,
         p.compliance_status,
-        p.processing_time_seconds
-    from {{ ref('stg_employees') }} e
-    left join payroll p
-        on e.employee_id = p.employee_id
-    left join {{ ref('dim_employees') }} de
-        on e.employee_id = de.employee_id
-        and (p.payment_date between de.effective_date and de.end_date or p.payment_date is null)
-        and (de.is_active_employee = true or de.is_active_employee is null)
-    left join {{ ref('dim_tax_rule') }} tr
-        on p.tax_rule_id = tr.regulation_id
-        and (p.payment_date between tr.effective_date and tr.end_date or p.payment_date is null)
-        and (tr.is_active = true or tr.is_active is null)
-    left join {{ ref('dim_clients') }} dc
-        on p.client_id = dc.client_id
+        p.processing_time_seconds,
+        CASE WHEN de.employee_surrogate_key IS NOT NULL THEN TRUE ELSE FALSE END AS employee_matched,
+        CASE WHEN tr.regulation_surrogate_key IS NOT NULL THEN TRUE ELSE FALSE END AS tax_rule_matched,
+        CASE WHEN dc.client_id IS NOT NULL THEN TRUE ELSE FALSE END AS client_matched
+    FROM payroll p
+    LEFT JOIN {{ ref('dim_employees') }} de
+        ON p.employee_id = de.employee_id
+    LEFT JOIN {{ ref('dim_tax_rule') }} tr
+        ON p.tax_rule_id = tr.regulation_id
+    LEFT JOIN {{ ref('dim_clients') }} dc
+        ON p.client_id = dc.client_id
 )
-
-select * from joined
+SELECT * FROM joined

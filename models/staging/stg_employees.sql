@@ -1,11 +1,12 @@
 {{ config(
-    materialized='view'
+    materialized='view',
+    schema ='staging'
 ) }}
 
 with
 
 source as (
-    select * from {{ source('deel_data', 'employees') }}
+    select * from {{ source('raw', 'final_employees') }}
 ),
 
 renamed as (
@@ -14,7 +15,7 @@ renamed as (
         employee_id::VARCHAR as employee_id,
 
         -- strings
-        first_name || ' ' || last_name as employee_name,
+        employee_name,
         contract_type::VARCHAR as contract_type,
 
         -- timestamps

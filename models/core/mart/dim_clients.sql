@@ -1,7 +1,10 @@
 {{ config(
     materialized='table',
-    unique_key='client_id'
+    unique_key='client_id',
+    schema = 'analytics'
+      
 ) }}
+
 
 with source as (
 
