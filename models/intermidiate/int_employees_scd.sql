@@ -1,6 +1,6 @@
 {{ config(
     materialized='table',
-    schema='ntermediate'
+    schema='intermediate'
 ) }}
 
 with
