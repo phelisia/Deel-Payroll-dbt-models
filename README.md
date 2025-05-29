@@ -19,7 +19,7 @@ Project Structure
         
     *   intermediate: SCD logic and intermediate transformations (e.g., int\_deel\_regulations\_scd, int\_payroll, int\_employee\_scd).
         
-    *   analytics: Final dimensions and facts (e.g., dim\_employees, dim\_tax\_rule, dim\_clients, fact\_payroll).
+    *   Core : Final dimensions and facts (e.g., dim\_employees, dim\_tax\_rule, dim\_clients, fact\_payroll).
         
 *   **Key Models**:
     
@@ -45,13 +45,16 @@ Prerequisites
 
 *   **Supabase**: PostgreSQL database with raw, staging, intermediate, and analytics schemas.
     
-*   **dbt**: Version 1.5+.
+*   **dbt**: Version 1.9+.
     
 *   **Python**: 3.8+ for dbt dependencies.
     
 *   **Git**: For version control.
     
 *   **GitHub**: Repository for hosting code.
+
+*   **Deep Channel**: Coding ide / Vscode.
+
     
 
 Setup Instructions
