@@ -38,6 +38,8 @@ Project Structure
     *   raw.employees.: Employee seed data.
         
     *   raw.payroll: Payroll transactions (3,590 distinct employee\_id values).
+
+    *   raw.compliance_events: tax rules data .
         
 
 Prerequisites
