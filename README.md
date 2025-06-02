@@ -8,7 +8,7 @@ Deel Payroll Analytics
 Overview
 --------
 
-Deel Payroll Analytics is a dbt project that processes payroll data to generate actionable insights for global payroll management. It transforms raw data from sources like employee records, regulations, and payroll transactions into a structured data warehouse in Supabase, with schemas for staging, intermediate, and analytics layers. The project builds dimension tables (dim\_employees, dim\_tax\_rule, dim\_clients) and a fact table (fact\_payroll) to support reporting on payroll metrics, compliance, and tax regulations.
+Deel Payroll Analytics is a dbt project that processes payroll data to generate actionable insights for global payroll management. It transforms raw data from sources like employee records, regulations, and payroll transactions into a structured data warehouse in Supabase, with schemas for staging, intermediate, and analytics layers. The project builds dimension tables (dim\_employees, dim\_tax\_rule, dim\_clients) and a fact table (fact\_payroll) to support reporting on payroll metrics, compliance, and tax regulations.Link to the [Deel's Payroll Dashboard](https://app.hex.tech/phelisiajeruto/app/8aa09a67-61f5-4f26-839e-38ccfd5bc2fa/latest)
 
 Project Structure
 -----------------
