@@ -41,6 +41,12 @@ joined AS (
         p.status,
         p.compliance_status,
         p.processing_time_seconds,
+    CASE WHEN p.processing_time_seconds < 600 THEN 'Fast'
+    WHEN p.processing_time_seconds BETWEEN 600 AND 1800 THEN 'Acceptable'
+    WHEN p.processing_time_seconds BETWEEN 1801 AND 3600 THEN 'Slow'
+    ELSE 'Critical'
+  END AS processing_speed_band,
+
         CASE WHEN de.employee_surrogate_key IS NOT NULL THEN TRUE ELSE FALSE END AS employee_matched,
         CASE WHEN tr.regulation_surrogate_key IS NOT NULL THEN TRUE ELSE FALSE END AS tax_rule_matched,
         CASE WHEN dc.client_id IS NOT NULL THEN TRUE ELSE FALSE END AS client_matched
