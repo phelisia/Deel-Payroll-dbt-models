@@ -19,8 +19,8 @@ renamed AS (
         compliance_category,
 
         -- Dates
-        COALESCE(effective_date, '1900-01-01')::DATE AS effective_date,
-        COALESCE(end_date, '9999-12-31')::DATE AS end_date,
+        COALESCE(effective_date, '1900-01-01')::timestamptz AS effective_date,
+        COALESCE(end_date, '9999-12-31')::timestamptz AS end_date,
 
         -- Booleans
         CASE

@@ -46,6 +46,7 @@ calculated as (
             when is_completed_payment then extract(epoch from (completed_at - started_at))
             else null
         end as processing_time_seconds
+
     from staged
     where payment_id is not null
 )

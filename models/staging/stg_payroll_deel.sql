@@ -32,7 +32,7 @@ renamed as (
         country_id,
 
         -- dates
-        date_trunc('day', payment_date)::DATE as payment_date,
+        date_trunc('day', payment_date)::timestamptz as payment_date,
 
         -- timestamps
         started_at::timestamptz as started_at,
