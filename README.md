@@ -62,7 +62,7 @@ Prerequisites
 Setup Instructions
 ------------------
 
-1.  **Clone the Repository**:bashCopygit clone https://github.com/your-username/deel-payroll-analytics.gitcd deel-payroll-analytics
+1.  **Clone the Repository**:bashCopygit clone https://github.com/phelisia/Deel-Payroll-dbt-models.git deel-payroll-analytics
     
 2.  **Install Dependencies**:bashCopypip install dbt-postgres
     
